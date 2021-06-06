@@ -8,6 +8,7 @@ MainApp::MainApp(QWidget *parent) :
 {
     ui->setupUi(this);
     quwi_api = QuwiApi::get_quwi_api();
+    connect(quwi_api, SIGNAL(get_progect_finished()),this, SLOT(on_get_projects()));
 }
 
 MainApp::~MainApp()
@@ -23,5 +24,10 @@ void MainApp::on_logout_clicked()
 
 void MainApp::on_projects_clicked()
 {
+    quwi_api->get_projects();
+}
 
+void MainApp::on_get_projects()
+{
+    QJsonObject obj = quwi_api->get_user_projects();
 }

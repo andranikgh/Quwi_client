@@ -100,3 +100,35 @@ void QuwiApi::logout()
         reply->deleteLater();
     });
 }
+
+void QuwiApi::get_projects()
+{
+    QNetworkAccessManager *mgr = new QNetworkAccessManager();
+    QNetworkRequest request(projects_url);
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    const QByteArray data = "Bearer " + get_token().toUtf8();
+    request.setRawHeader(QByteArray("Authorization"), QByteArray(data));
+
+
+    QNetworkReply *reply = mgr->get(request);
+    QObject::connect(reply, &QNetworkReply::finished, [=](){
+        if(reply->error() == QNetworkReply::NoError){
+            QString contents = QString::fromUtf8(reply->readAll());
+            qDebug() << contents;
+            QJsonDocument doc = QJsonDocument::fromJson(contents.toUtf8());
+            user_projects = doc.object();
+            emit get_progect_finished();
+        }
+        else{
+            QString err = reply->errorString();
+            qDebug() << err;
+        }
+        reply->deleteLater();
+    });
+}
+
+QJsonObject QuwiApi::get_user_projects() const
+{
+    return user_projects;
+}

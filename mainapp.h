@@ -18,8 +18,8 @@ public:
 
 private slots:
     void on_logout_clicked();
-
     void on_projects_clicked();
+    void on_get_projects();
 
 private:
     Ui::MainApp *ui;
