@@ -95,7 +95,8 @@ void QuwiApi::logout()
             set_token("");
             emit loged_out();
         } else{
-
+            QString err = reply->errorString();
+            qDebug() << err;
         }
         reply->deleteLater();
     });
@@ -131,4 +132,34 @@ void QuwiApi::get_projects()
 QJsonObject QuwiApi::get_user_projects() const
 {
     return user_projects;
+}
+
+// TODO Add Param To use id.
+void QuwiApi::change_groject_name(QString name, int id)
+{
+    QNetworkAccessManager *mgr = new QNetworkAccessManager();
+    QNetworkRequest request(change_project_name_url);
+
+    //request.setRawHeader(QByteArray("Content-Type"), QByteArray("multipart/form-data"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    const QByteArray token = "Bearer " + get_token().toUtf8();
+    request.setRawHeader(QByteArray("Authorization"), QByteArray(token));
+
+    QJsonObject data;
+    data["name"] = name;
+    QJsonDocument doc(data);
+    QByteArray pData = doc.toJson();
+
+    QNetworkReply *reply = mgr->post(request, pData);
+
+    QObject::connect(reply, &QNetworkReply::finished, [=](){
+        if(reply->error() == QNetworkReply::NoError){
+            QString contents = QString::fromUtf8(reply->readAll());
+            qDebug() << contents;
+        } else{
+            QString err = reply->errorString();
+            qDebug() << err;
+        }
+        reply->deleteLater();
+    });
 }

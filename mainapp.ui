@@ -56,6 +56,16 @@
      <string>Q</string>
     </property>
    </widget>
+   <widget class="QListWidget" name="list_widget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>41</y>
+      <width>701</width>
+      <height>271</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

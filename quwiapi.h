@@ -22,6 +22,7 @@ public:
     void logout();
     void get_projects();
     QJsonObject get_user_projects() const;
+    void change_groject_name(QString name, int id);
 
 signals:
     void logined();
@@ -37,6 +38,8 @@ private:
     const QUrl login_url = QStringLiteral("https://api.quwi.com/v2/auth/login");
     const QUrl projects_url = QStringLiteral("https://api.quwi.com/v2/projects-manage/index");
     const QUrl logout_url = QStringLiteral("https://api.quwi.com/v2/auth/logout");
+    // TODO Change url for generic update.
+    const QUrl change_project_name_url = QStringLiteral("https://api.quwi.com/v2/projects-manage/update?id=1097");
 
 };
 
